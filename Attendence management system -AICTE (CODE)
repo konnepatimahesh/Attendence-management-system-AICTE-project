@@ -1,1 +1,51 @@
+The Attendance Management System utilizes Python’s csv and datetime modules to efficiently manage attendance records.
+It stores data in a file named attendance.csv, where the mark_attendance function records the user’s name and timestamp, and the view_attendance function retrieves and displays the data in a formatted table.
+The program features a user-friendly, menu-driven interface, enabling users to mark attendance, view records, or exit the system. With built-in error handling and a modular design, the system is scalable and can be enhanced with advanced features like biometric authentication or cloud integration, making it a reliable and adaptable solution for attendance management.
+
+#code#
+
+import csv
+import datetime
+
+attendance_file = "attendance.csv"
+
+def mark_attendance(name):
+    date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open(attendance_file, mode="a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow([name, date_time])
+    print(f"Attendance marked for {name} at {date_time}")
+
+def view_attendance():
+    print("\nAttendance Records:")
+    print("{:<15} {:<20}".format("Name", "Date & Time"))
+    print("-" * 40)
+    try:
+        with open(attendance_file, mode="r") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                print("{:<15} {:<20}".format(row[0], row[1]))
+    except FileNotFoundError:
+        print("No attendance records found!")
+
+def attendance_menu():
+    while True:
+        print("\nAttendance Management System")
+        print("1. Mark Attendance")
+        print("2. View Attendance")
+        print("3. Exit")
+        choice = input("Enter your choice: ")
+        
+        if choice == "1":
+            name = input("Enter your name: ")
+            mark_attendance(name)
+        elif choice == "2":
+            view_attendance()
+        elif choice == "3":
+            print("Exiting the system. Goodbye!")
+            break
+        else:
+            print("Invalid choice! Please select a valid option.")
+
+attendance_menu()
 
